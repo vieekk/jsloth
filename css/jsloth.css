@@ -1,0 +1,5 @@
+.sloth {
+  background: url("../img/jsloth-64.png") no-repeat;
+  position: absolute;
+  z-index: 100;
+}

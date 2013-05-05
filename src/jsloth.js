@@ -2,87 +2,55 @@ var Jsloth = (function ($) {
 	function Jsloth(options) {
 		var defaults = {
 			fps: 30,
-			position: 'top left',
 			size: 64
 		};
 		this.settings = $.extend({}, defaults, options);
 		this.create();
+		this.direction = 0;
+		this.x = this.y = -this.settings.size;
 	}
 
 	function create() {
 		this.$sloth = $('<div class="sloth"></div>').prependTo('body');
-		var position = this.settings.position.split(' ');
 		var px = '-' + this.settings.size + 'px';
 		this.$sloth
 			.addClass('sloth-' + this.settings.size)
-			.css(position[0], px)
-			.css(position[1], px);
+			.css({
+				left: px,
+				top: px
+			});
 	}
 
 	function exec() {
-		this.x = 0;
-		this.y = 0;
 		var that = this;
 		setInterval(function () {
 			that.update();
 		}, 1000/this.settings.fps);
 	}
 
-	function logic(z) {
-		if (typeof z === 'undefined') {
-			this.logic('x');
-			this.logic('y');
-		} else {
-			if (z === 'x') {
-				length = $(window).width();
-				i = 1;
-			} else if (z === 'y') {
-				length = $(window).height();
-				i = 0;
-			} else {
-				return;
-			}
-
-			if (this[z] < length) return;
-			var position = this.settings.position.split(' ');
-
-			switch (position[i]) {
-				case 'top':
-					position[i] = 'bottom';
-					break;
-				case 'bottom':
-					position[i] = 'top';
-					break;
-				case 'left':
-					position[i] = 'left';
-					break;
-				case 'right':
-					position[i] = 'right';
-					break;
-			}
-
-			this.settings.position = position.join(' ');
-			this[z] -= length;
-		}
+	function logic() {
+		var width = $(window).width();
+		var height = $(window).height();
+		// logic...
 	}
 
-	function move(z) {
-		if (typeof z === 'undefined') {
-			this.move('x');
-			this.move('y');
-		} else {
-			var rand = Math.floor((Math.random()*5) + 1);
-			this[z] += rand;
-		}
+	function move() {
+		var rand = function () {
+			return Math.floor((Math.random()*5) + 1)
+		};
+		
+		this.x += rand();
+		this.y += rand();
 	}
 
 	function update() {
 		this.move();
 		this.logic();
-		var position = this.settings.position.split(' ');
 		this.$sloth
-			.css(position[0], this.y)
-			.css(position[1], this.x);
+			.css({
+				left: this.x,
+				top: this.y
+			});
 	}
 
 	Jsloth.prototype.constructor = Jsloth;

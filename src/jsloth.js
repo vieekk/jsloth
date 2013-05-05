@@ -1,14 +1,10 @@
-var Jsloth = (function () {
+var Jsloth = (function ($) {
 	function Jsloth() {
 		this.create();
 	}
 
 	function create() {
-		var sloth = document.createElement('div');
-		var attr = document.createAttribute('class');
-		attr.value = 'sloth';
-		sloth.setAttributeNode(attr);
-		this.sloth = document.getElementsByTagName('body')[0].appendChild(sloth);
+		this.$sloth = $('<div class="sloth"></div>').prependTo('body');
 	}
 
 	function exec() {
@@ -27,8 +23,10 @@ var Jsloth = (function () {
 	function update() {
 		this.x++;
 		this.y++;
-		this.sloth.style.left = this.x + 'px';
-		this.sloth.style.bottom = this.y + 'px';
+		this.$sloth.css({
+			left: this.x + 'px',
+			bottom: this.y + 'px'
+		});
 	}
 
 	Jsloth.prototype.constructor = Jsloth;
@@ -38,7 +36,7 @@ var Jsloth = (function () {
 	Jsloth.prototype.update = update;
 
 	return Jsloth;
-})();
+})(jQuery);
 
 var sloth = new Jsloth();
 sloth.exec();
